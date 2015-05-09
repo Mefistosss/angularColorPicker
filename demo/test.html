@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html ng-app="test">
+<head>
+    <title>Angular Color Picker</title>
+    <link rel="stylesheet" href="../css/angularColorPicker.css">
+    <script src="../node_modules/angular/angular.js"></script>
+
+    <script src="../build/angularColorPicker.js"></script>
+
+    <script>
+        angular.module('test', ['angularColorPicker'])
+        .controller('constructor', function($scope) {
+            $scope.color = '#bebebe';
+        });
+    </script>
+    <style>
+        #bt {
+            margin: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div ng-controller="constructor">
+        <button id="bt" angular-color-picker ng-model="color">eeeee</button>
+    </div>
+</body>
+</html>
