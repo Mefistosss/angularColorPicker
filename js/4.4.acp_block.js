@@ -1,7 +1,7 @@
 acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function($compile, $window, acpLib, imgPath) {
     return {
         restrict: 'A',
-        scope: false,
+        // scope: true,
         template: '<img src="' + imgPath + '">' +
                     '<div class="circle"></div>',
         link: function(scope, element, attrs) {
@@ -37,17 +37,17 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
 
                     // angular.element(circle).css('border-color', V < 50 ? '#fff' : '#000');
                     
-                    scope.picker.S = S;
-                    scope.picker.V = V;
+                    scope.instance.picker.S = S;
+                    scope.instance.picker.V = V;
 
-                    rgb = acpLib.hsv_rgb(scope.hue, S, V);
+                    rgb = acpLib.hsv_rgb(scope.instance.hue, S, V);
                     scope.$apply(function() {
-                        scope.rgb = 'rgb(' + rgb + ')';
-                        scope.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
+                        scope.instance.rgb = 'rgb(' + rgb + ')';
+                        scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
                         scope.$emit('colorPickerEvent', {
-                            rgb: scope.rgb,
+                            rgb: scope.instance.rgb,
                             cleanRgb: rgb + '',
-                            hex: scope.hex
+                            hex: scope.instance.hex
                         });
                     });
                 },
@@ -71,7 +71,7 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
                     angular.element($window.document).unbind('mouseup', mouseUp);
                 };
 
-            scope.$watch('blockBGColor', function(v) {
+            scope.$watch('instance.blockBGColor', function(v) {
                 element.css('background-color', v);
             });
 
@@ -89,7 +89,7 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
             element.bind('mousedown', function(e) {
                 if (1 === e.which) {
                     e.preventDefault();
-                    scope.none = false;
+                    scope.instance.none = false;
                     move(e);
                     angular.element($window.document).bind('mouseup', mouseUp);
                     angular.element($window.document).bind('mousemove', move);
@@ -97,10 +97,10 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
             });
 
             scope.$on('setColorPickerColorEvent', function(e, args) {
-                scope.rgb = args.color;
+                scope.instance.rgb = args.color;
             });
 
-            scope.$watch('hsv', function(v) {
+            scope.$watch('instance.hsv', function(v) {
                 if (v && v.length > 0) {
                     if ('none' === v) {
                         v = [359, 0, 0];

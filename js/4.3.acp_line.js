@@ -1,5 +1,5 @@
 acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $window, acpLib) {
-    var rgb = function (canvas, h, w){
+    var rgb = function (canvas, h, w) {
             var gradient, hue, color, canvas, gradient1;
             
             canvas = canvas.getContext("2d");
@@ -26,6 +26,7 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
 
     return {
         restrict: 'A',
+        // scope: true,
         template: '<div class="arrows">' +
                     '<div id="left-arrow"></div>' +
                     '<div id="right-arrow"></div>' +
@@ -51,17 +52,17 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                     tmp = Math.abs(tmp - 360);
                     tmp = (tmp == 360) ? 0 : tmp;
               
-                    scope.hue = tmp;
+                    scope.instance.hue = tmp;
 
-                    rgb = acpLib.hsv_rgb(tmp, scope.picker.S, scope.picker.V);
+                    rgb = acpLib.hsv_rgb(tmp, scope.instance.picker.S, scope.instance.picker.V);
                     scope.$apply(function() {
-                        scope.blockBGColor = 'rgb(' + acpLib.hsv_rgb(tmp, 100, 100) + ')';
-                        scope.rgb = 'rgb(' + rgb + ')';
-                        scope.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
+                        scope.instance.blockBGColor = 'rgb(' + acpLib.hsv_rgb(tmp, 100, 100) + ')';
+                        scope.instance.rgb = 'rgb(' + rgb + ')';
+                        scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
                         scope.$emit('colorPickerEvent', {
-                            rgb: scope.rgb,
+                            rgb: scope.instance.rgb,
                             cleanRgb: rgb + '',
-                            hex: scope.hex
+                            hex: scope.instance.hex
                         });
                     });
                 },
@@ -69,8 +70,8 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                     var top = 180 - 180 / (360 / h);
                     
                     arrows.style.top = top - 2 + 'px';
-                    scope.hue = h;
-                    scope.blockBGColor = 'rgb(' + acpLib.hsv_rgb(h, 100, 100) + ')';
+                    scope.instance.hue = h;
+                    scope.instance.blockBGColor = 'rgb(' + acpLib.hsv_rgb(h, 100, 100) + ')';
                 },
                 move = function(e) {
                     getColor(e);
@@ -89,7 +90,7 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
             angular.element(arrows).bind('mousedown', function(e) {
                 if (1 === e.which) {
                     e.preventDefault();
-                    scope.none = false;
+                    scope.instance.none = false;
                     pos = acpLib.obj.positY(line.node);
                     angular.element($window.document).bind('mousemove', move);
                 }
@@ -98,7 +99,7 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
             angular.element(arrows.node).bind('click', getColor);
 
             angular.element(line.node).bind('click', function(e) {
-                scope.none = false;
+                scope.instance.none = false;
                 getColor(e);
             });
 
@@ -111,7 +112,7 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                 }
             });
 
-            scope.$watch('hsv', function(v) {
+            scope.$watch('instance.hsv', function(v) {
                 if (v && v.length > 0) {
                     if ('none' === v) {
                         v = [359, 0, 0];

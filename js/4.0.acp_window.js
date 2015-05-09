@@ -1,9 +1,13 @@
-acp.directive('acpWindow', ['$compile', 'acpLib', function($compile, acpLib) {
+acp.directive('acpWindow', ['$compile', 'acpLib', 'acpModel', function($compile, acpLib, acpModel) {
     return {
         restrict: 'A',
+        scope: true,
         template:   '<div class="control-panel" acp-control-panel></div>' +
                     '<div class="main-panel" acp-main-panel></div>',
         link: function(scope, element, attrs) {
+            scope.instance = acpModel.getInstance(attrs.name);
+
+
             scope.blockBGColor = 'red';
             scope.rgb = 'rgb(255,255,255)';
             scope.hex = '#ffffff';

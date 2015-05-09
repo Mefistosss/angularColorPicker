@@ -53,10 +53,6 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', function($com
                     ae($window.document).bind('mousemove', move);
                 }
             });
-
-            angular.element(button).bind('click', function(e) {
-                scope.$emit('closeColorPickerEvent');
-            });
         }
     };
 }]);

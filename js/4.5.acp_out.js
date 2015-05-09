@@ -3,7 +3,7 @@ acp.directive('acpOut', ['$compile', function($compile) {
         restrict: 'A',
         scope: false,
         link: function(scope, element, attrs) {
-            scope.$watch('rgb', function(v) {
+            scope.$watch('instance.rgb', function(v) {
                 element.css('background-color', v);
             });
         }

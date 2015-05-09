@@ -119,7 +119,34 @@ acp.service('acpLib', function() {
     }
 });
 acp.factory('acpModel', function() {
-    return {
-        instance: null
-    }
+    var colorPickers = [];
+
+    var api = {
+        checkInstance: function(name) {
+            return (name && colorPickers[name]);
+        },
+        getInstance: function(name) {
+            return colorPickers[name];
+        },
+        removeInstance: function(name) {
+            if (api.checkInstance(name)) {
+                delete colorPickers[name];
+            }
+        },
+        newInstance: function(name) {
+            api.removeInstance(name);
+            colorPickers[name] = {
+                blockBGColor: 'red',
+                rgb: 'rgb(255,255,255)',
+                hex: '#ffffff',
+                hue: 0,
+                none: false,
+                picker: {
+                    V: 100,
+                    S: 100
+                }
+            }
+        }
+    };
+    return api;
 });
