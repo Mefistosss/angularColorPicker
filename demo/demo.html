@@ -2,11 +2,13 @@
 <html ng-app="myModule">
 <head>
     <title>Angular Color Picker</title>
-    <link rel="stylesheet" href="../css/angularColorPicker.css">
+    <!-- <link rel="stylesheet" href="../build/angularColorPicker.css"> -->
+    <link rel="stylesheet" href="../build/angularColorPicker.min.css">
     
     <script src="../node_modules/angular/angular.js"></script>
 
-    <script src="../build/angularColorPicker.js"></script>
+    <!-- <script src="../build/angularColorPicker.js"></script> -->
+    <script src="../build/angularColorPicker.min.js"></script>
 
     <script>
         angular.module('myModule', ['angularColorPicker'])
@@ -34,6 +36,7 @@
             transform: translateX(-50%) translateY(-50%);
         }
         #rgb, #hex {
+            cursor: pointer;
             position: relative;
             text-align: center;
             width: 200px;
@@ -49,7 +52,7 @@
         <div id="rgb" ng-style="{'background-color': rgb}" angular-color-picker ng-model="rgb">
             <span>{{rgb}}</span>
         </div>
-        <div id="hex" ng-style="{'background-color': hex}" angular-color-picker ng-model="hex">
+        <div id="hex" ng-style="{'background-color': hex}" angular-color-picker="hex" ng-model="hex">
             <span>{{hex}}</span>
         </div>
     </div>

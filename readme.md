@@ -4,4 +4,4 @@ Lightweight сolorpiker
 
 Run:
     `sudo npm install`,
-    `gulp js`.
+    `gulp` or `gulp minify`.
