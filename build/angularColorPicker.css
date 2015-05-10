@@ -1,0 +1,126 @@
+.color-picker {
+    display: inline-block;
+    position: relative;
+    width: 250px;
+    height: 285px;
+    border: 2px solid #8A2908;
+    background-color: white;
+    top: 0px;
+    left: 0px;
+    z-index: 1000000;
+    position: absolute;
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+}
+
+.color-picker .control-panel {
+    height: 25px;
+    background-color: #8A2908;
+    cursor: pointer;
+}
+
+.color-picker .control-panel .close-button{
+    position: absolute;
+    right: 0px;
+}
+
+.color-picker .main-panel {
+    padding: 10px;
+    height: 240px;
+}
+
+.color-picker .out-color {
+    margin-top: 10px;
+    width: 70px;
+    height: 45px;
+    border: 1px dashed black;
+    display: inline-block;
+    top: 0;
+    left: 100%;
+    float: left;
+}
+
+.color-picker .text {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+ .color-picker .block-picker {
+    background-color:red;
+    position: relative;
+    height: 180px;
+    width: 180px;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.color-picker .block-picker img {
+    width: 180px;
+}
+
+.color-picker .line-piker {
+    position: absolute;
+    left: 210px;
+    cursor: pointer;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.color-picker #right-arrow {
+    width: 0;
+    height: 0;
+    left: 23px;
+    position: absolute;
+    border-bottom: 6px solid transparent;
+    border-left: 10px solid transparent;
+    border-top: 6px solid transparent;
+    border-right: 10px solid black;
+}
+
+.color-picker #left-arrow {
+    width: 0;
+    height: 0;
+    position: absolute;
+    border-bottom: 6px solid transparent;
+    border-left: 10px solid black;
+    border-top: 6px solid transparent;
+    border-right: 8px solid transparent;
+}
+
+.color-picker .arrows {
+    position: absolute;
+    top: 0;
+    margin-top: -4px;
+    left: -11px;
+    width: 40px;
+    cursor: pointer;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.color-picker .circle {
+    width: 6px;
+    height: 6px;
+    background-color: black;
+    border: 1px solid white;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    cursor: default;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none; 
+}
+
+.control-panel .close-picker {
+    position: absolute;
+    right: 0px;
+}

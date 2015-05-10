@@ -367,7 +367,6 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
 
     return {
         restrict: 'A',
-        // scope: true,
         template: '<div class="arrows">' +
                     '<div id="left-arrow"></div>' +
                     '<div id="right-arrow"></div>' +
