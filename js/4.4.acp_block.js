@@ -1,7 +1,6 @@
 acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function($compile, $window, acpLib, imgPath) {
     return {
         restrict: 'A',
-        // scope: true,
         template: '<img src="' + imgPath + '">' +
                     '<div class="circle"></div>',
         link: function(scope, element, attrs) {
@@ -23,7 +22,7 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
                     left = (left < 0) ? 0 : left;
                     left = (left > bWi) ? bWi  : left;
 
-                    angular.element(circle).css('left', left + 'px');
+                    ae(circle).css('left', left + 'px');
 
                     S = Math.ceil(left / pxX);
         
@@ -31,11 +30,11 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
                     top = (top > bHe) ? bHe : top;
                     top = (top < 0) ? 0 : top;
                     
-                    angular.element(circle).css('top', top + 'px');
+                    ae(circle).css('top', top + 'px');
                     
                     V = Math.ceil(Math.abs(top / pxY - 100));
 
-                    // angular.element(circle).css('border-color', V < 50 ? '#fff' : '#000');
+                    // ae(circle).css('border-color', V < 50 ? '#fff' : '#000');
                     
                     scope.instance.picker.S = S;
                     scope.instance.picker.V = V;
@@ -44,18 +43,14 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
                     scope.$apply(function() {
                         scope.instance.rgb = 'rgb(' + rgb + ')';
                         scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
-                        scope.$emit('ecpEvent', {
-                            rgb: scope.instance.rgb,
-                            cleanRgb: rgb + '',
-                            hex: scope.instance.hex
-                        });
+                        scope.$emit('ecpEvent');
                     });
                 },
                 setPosition = function(hsv) {
                     var top = bHe - bHe / (255 / hsv[2]),
                         left = bWi / (1 / hsv[1]);
 
-                    angular.element(circle).css({
+                    ae(circle).css({
                         'top': top + 'px',
                         'left': left + 'px'
                     });
@@ -67,8 +62,8 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
                 },
                 mouseUp = function(e) {
                     e.preventDefault();
-                    angular.element($window.document).unbind('mousemove', move);
-                    angular.element($window.document).unbind('mouseup', mouseUp);
+                    ae($window.document).unbind('mousemove', move);
+                    ae($window.document).unbind('mouseup', mouseUp);
                 };
 
             scope.$watch('instance.blockBGColor', function(v) {
@@ -91,8 +86,8 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
                     e.preventDefault();
                     scope.instance.none = false;
                     move(e);
-                    angular.element($window.document).bind('mouseup', mouseUp);
-                    angular.element($window.document).bind('mousemove', move);
+                    ae($window.document).bind('mouseup', mouseUp);
+                    ae($window.document).bind('mousemove', move);
                 }
             });
 

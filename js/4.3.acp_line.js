@@ -26,7 +26,6 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
 
     return {
         restrict: 'A',
-        // scope: true,
         template: '<div class="arrows">' +
                     '<div id="left-arrow"></div>' +
                     '<div id="right-arrow"></div>' +
@@ -59,11 +58,7 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                         scope.instance.blockBGColor = 'rgb(' + acpLib.hsv_rgb(tmp, 100, 100) + ')';
                         scope.instance.rgb = 'rgb(' + rgb + ')';
                         scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
-                        scope.$emit('ecpEvent', {
-                            rgb: scope.instance.rgb,
-                            cleanRgb: rgb + '',
-                            hex: scope.instance.hex
-                        });
+                        scope.$emit('ecpEvent');
                     });
                 },
                 setPosition = function(h) {
@@ -78,8 +73,8 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                 },
                 mouseUp = function(e) {
                     e.preventDefault();
-                    angular.element($window.document).unbind('mousemove', move);
-                    angular.element($window.document).unbind('mouseup', mouseUp);
+                    ae($window.document).unbind('mousemove', move);
+                    ae($window.document).unbind('mouseup', mouseUp);
                 };
 
             line.node.width = line.width;
@@ -87,28 +82,28 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
            
             rgb(line.node, line.height, line.width);
 
-            angular.element(arrows).bind('mousedown', function(e) {
+            ae(arrows).bind('mousedown', function(e) {
                 if (1 === e.which) {
                     e.preventDefault();
                     scope.instance.none = false;
                     pos = acpLib.obj.positY(line.node);
-                    angular.element($window.document).bind('mousemove', move);
+                    ae($window.document).bind('mousemove', move);
                 }
             });
 
-            angular.element(arrows.node).bind('click', getColor);
+            ae(arrows.node).bind('click', getColor);
 
-            angular.element(line.node).bind('click', function(e) {
+            ae(line.node).bind('click', function(e) {
                 scope.instance.none = false;
                 getColor(e);
             });
 
-            angular.element(line.node).bind('mousedown', function(e) {
+            ae(line.node).bind('mousedown', function(e) {
                 if (1 === e.which) {
                     e.preventDefault();
                     pos = acpLib.obj.positY(line.node);
-                    angular.element($window.document).bind('mouseup', mouseUp);
-                    angular.element($window.document).bind('mousemove', move);
+                    ae($window.document).bind('mouseup', mouseUp);
+                    ae($window.document).bind('mousemove', move);
                 }
             });
 

@@ -7,7 +7,7 @@ acp.directive('acpMainPanel', ['$compile', function($compile) {
                     '<div class="text">' +
                         '<span>{{instance.rgb}}</span></br>' +
                         '<span>{{instance.hex}}</span></br>' +
-                        'none: <input ng-model="instance.none" type="checkbox" ng-change="instance.checkboxChange()">' +
+                        'none: <input ng-model="instance.none" type="checkbox" ng-change="checkboxChange()">' +
                     '</div>'
     };
 }]);
