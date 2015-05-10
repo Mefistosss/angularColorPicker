@@ -59,7 +59,7 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                         scope.instance.blockBGColor = 'rgb(' + acpLib.hsv_rgb(tmp, 100, 100) + ')';
                         scope.instance.rgb = 'rgb(' + rgb + ')';
                         scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
-                        scope.$emit('colorPickerEvent', {
+                        scope.$emit('ecpEvent', {
                             rgb: scope.instance.rgb,
                             cleanRgb: rgb + '',
                             hex: scope.instance.hex

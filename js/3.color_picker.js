@@ -1,15 +1,36 @@
-acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel',
-    function($compile, $document, acpModel) {
+acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLib',
+    function($compile, $document, acpModel, acpLib) {
     return {
         restrict: 'A',
         scope: {},
         require: '?ngModel',
         link: function(scope, element, attrs, ngModel) {
             var id = attrs.id || 'angular-color-picker-' + Date.now(),
+                instance, ngModelFlag = false,
                 container = ae('<div>'),
                 click = function(e) {
-                    acpModel.newInstance(id);
+                    var value;
+                    instance = acpModel.newInstance(id);
                     ae($document[0].body).append(container[0]);
+                    if (attrs.ngModel, ngModel.$valid, value =  acpLib.cleanString(ngModel.$viewValue)) {
+                        var rgb = acpLib.pareseRgb(value);
+                        instance.rgb = value;
+                        if ('none' === rgb) {
+                            instance.rgb = '';
+                            instance.hex = '';
+                            instance.hsv = 'none';
+                            instance.hue = 0;
+                            instance.picker.V = 100;
+                            instance.picker.S = 100;
+                            instance.blockBGColor = 'red';
+                            instance.none = true;
+                        } else {
+                            instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
+                            instance.hsv = acpLib.rgb_hsv(rgb);
+                            instance.none = false;
+                        }
+                        ngModelFlag = true;
+                    }
                     $compile(container)(scope);
                 },
                 mouseDown = function(e) {
@@ -27,9 +48,15 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel',
             container.attr('acp-window', '');
             container.attr('name', id);
 
-            if (attrs.ngModel) {
-                console.log(ngModel);
-            }
+            scope.$on('ecpEvent', function(e) {
+                e.stopPropagation();
+                // instance.rgb
+                // instance.cleanRgb TODO
+                // instance.hex
+                if (ngModelFlag) {
+                    ngModel.$setViewValue(instance.rgb);     
+                }
+            });
             element.bind('click', click);
             $document.bind('mousedown', mouseDown);
         }

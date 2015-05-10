@@ -10,18 +10,23 @@
     <script>
         angular.module('test', ['angularColorPicker'])
         .controller('constructor', function($scope) {
-            $scope.color = '#bebebe';
+            $scope.color = 'rgb(61,38,137)';
         });
     </script>
     <style>
         #bt {
-            margin: 100px;
+            /*margin: 100px;*/
+            position: relative;
+            left: 50%;
+            width: 100px;
+            height: 100px;
         }
     </style>
 </head>
 <body>
     <div ng-controller="constructor">
-        <button id="bt" angular-color-picker ng-model="color">eeeee</button>
+        <!-- <button id="bt" angular-color-picker ng-model="color">eeeee</button> -->
+        <div id="bt" ng-style="{'background-color': color}" angular-color-picker ng-model="color">{{color}}</div>
     </div>
 </body>
 </html>

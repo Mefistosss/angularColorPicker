@@ -44,7 +44,7 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
                     scope.$apply(function() {
                         scope.instance.rgb = 'rgb(' + rgb + ')';
                         scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
-                        scope.$emit('colorPickerEvent', {
+                        scope.$emit('ecpEvent', {
                             rgb: scope.instance.rgb,
                             cleanRgb: rgb + '',
                             hex: scope.instance.hex
@@ -94,10 +94,6 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
                     angular.element($window.document).bind('mouseup', mouseUp);
                     angular.element($window.document).bind('mousemove', move);
                 }
-            });
-
-            scope.$on('setColorPickerColorEvent', function(e, args) {
-                scope.instance.rgb = args.color;
             });
 
             scope.$watch('instance.hsv', function(v) {

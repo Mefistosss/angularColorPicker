@@ -25,6 +25,9 @@ acp.service('acpLib', function() {
                 return rgb;
             }
         },
+        cleanString: function(str) {
+            return str.replace(/\s+/g, '');
+        },
         obj: {
             positX: function(b) {
                 var a, c;
@@ -146,7 +149,7 @@ acp.factory('acpModel', function() {
         },
         newInstance: function(name) {
             api.removeInstance(name);
-            colorPickers[name] = {
+            return colorPickers[name] = {
                 blockBGColor: 'red',
                 rgb: 'rgb(255,255,255)',
                 hex: '#ffffff',
@@ -155,24 +158,62 @@ acp.factory('acpModel', function() {
                 picker: {
                     V: 100,
                     S: 100
+                },
+                checkboxChange: function() {
+                    colorPickers[name].picker.V = 100;
+                    colorPickers[name].picker.S = 100;
+                    colorPickers[name].hue = 0;
+
+                    if (colorPickers[name].none) {
+                        colorPickers[name].rgb = '';
+                        colorPickers[name].hex = '';
+                        colorPickers[name].hsv = 'none';
+                        colorPickers[name].blockBGColor = 'red';
+                    } else {
+                        colorPickers[name].rgb = 'rgb(0,0,0)';
+                        colorPickers[name].hex = '#000';
+                        colorPickers[name].hsv = acpLib.rgb_hsv(acpLib.pareseRgb(colorPickers[name].rgb));
+                        colorPickers[name].blockBGColor = 'rgb(' + acpLib.hsv_rgb(0, 100, 100) + ')';
+                    }
                 }
-            }
+            };
         }
     };
     return api;
 });
-acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel',
-    function($compile, $document, acpModel) {
+acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLib',
+    function($compile, $document, acpModel, acpLib) {
     return {
         restrict: 'A',
         scope: {},
         require: '?ngModel',
         link: function(scope, element, attrs, ngModel) {
             var id = attrs.id || 'angular-color-picker-' + Date.now(),
+                instance, ngModelFlag = false,
                 container = ae('<div>'),
                 click = function(e) {
-                    acpModel.newInstance(id);
+                    var value;
+                    instance = acpModel.newInstance(id);
                     ae($document[0].body).append(container[0]);
+                    if (attrs.ngModel, ngModel.$valid, value =  acpLib.cleanString(ngModel.$viewValue)) {
+                        var rgb = acpLib.pareseRgb(value);
+                        instance.rgb = value;
+                        if ('none' === rgb) {
+                            instance.rgb = '';
+                            instance.hex = '';
+                            instance.hsv = 'none';
+                            instance.hue = 0;
+                            instance.picker.V = 100;
+                            instance.picker.S = 100;
+                            instance.blockBGColor = 'red';
+                            instance.none = true;
+                        } else {
+                            instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
+                            instance.hsv = acpLib.rgb_hsv(rgb);
+                            instance.none = false;
+                        }
+                        ngModelFlag = true;
+                    }
                     $compile(container)(scope);
                 },
                 mouseDown = function(e) {
@@ -190,15 +231,21 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel',
             container.attr('acp-window', '');
             container.attr('name', id);
 
-            if (attrs.ngModel) {
-                console.log(ngModel);
-            }
+            scope.$on('ecpEvent', function(e) {
+                e.stopPropagation();
+                // instance.rgb
+                // instance.cleanRgb TODO
+                // instance.hex
+                if (ngModelFlag) {
+                    ngModel.$setViewValue(instance.rgb);     
+                }
+            });
             element.bind('click', click);
             $document.bind('mousedown', mouseDown);
         }
     };
 }]);
-acp.directive('acpWindow', ['$compile', 'acpLib', 'acpModel', function($compile, acpLib, acpModel) {
+acp.directive('acpWindow', ['acpLib', 'acpModel', function(acpLib, acpModel) {
     return {
         restrict: 'A',
         scope: true,
@@ -206,41 +253,6 @@ acp.directive('acpWindow', ['$compile', 'acpLib', 'acpModel', function($compile,
                     '<div class="main-panel" acp-main-panel></div>',
         link: function(scope, element, attrs) {
             scope.instance = acpModel.getInstance(attrs.name);
-
-
-            scope.blockBGColor = 'red';
-            scope.rgb = 'rgb(255,255,255)';
-            scope.hex = '#ffffff';
-            scope.hue = 0;
-            scope.none = false;
-            scope.picker = {
-                V: 100,
-                S: 100
-            };
-
-            scope.checkboxChange = function() {
-                scope.picker.V = 100;
-                scope.picker.S = 100;
-                scope.hue = 0;
-
-                if (scope.none) {
-                    scope.rgb = '';
-                    scope.hex = '';
-                    scope.hsv = 'none';
-                    scope.blockBGColor = 'red';
-                } else {
-                    scope.rgb = 'rgb(0,0,0)';
-                    scope.hex = '#000';
-                    scope.hsv = acpLib.rgb_hsv(acpLib.pareseRgb(scope.rgb));
-                    scope.blockBGColor = 'rgb(' + acpLib.hsv_rgb(0, 100, 100) + ')';
-                }
-
-                scope.$emit('colorPickerEvent', {
-                    rgb: scope.rgb,
-                    cleanRgb: '0,0,0',
-                    hex: scope.hex
-                });
-            };
 
             // scope.$on('setColorPickerColorEvent', function(e, args) {
             //     var rgb = acpLib.pareseRgb(args.color);
@@ -260,8 +272,6 @@ acp.directive('acpWindow', ['$compile', 'acpLib', 'acpModel', function($compile,
             //         scope.none = false;
             //     }
             // });
-
-            // $compile(element.contents())(scope);
         }
     };
 }]);
@@ -331,15 +341,10 @@ acp.directive('acpMainPanel', ['$compile', function($compile) {
                     '<div class="block-picker" acp-block="blockBGColor"></div>' +
                     '<div class="out-color" acp-out></div>' +
                     '<div class="text">' +
-                        '<span>{{rgb}}</span></br>' +
-                        '<span>{{hex}}</span></br>' +
-                        'none: <input ng-model="none" type="checkbox" ng-change="checkboxChange()">' +
-                    '</div>',
-        link: function(scope, element, attrs) {
-            scope.$on('', function(e) {
-                // e.stopPropagation();
-            });
-        }
+                        '<span>{{instance.rgb}}</span></br>' +
+                        '<span>{{instance.hex}}</span></br>' +
+                        'none: <input ng-model="instance.none" type="checkbox" ng-change="instance.checkboxChange()">' +
+                    '</div>'
     };
 }]);
 acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $window, acpLib) {
@@ -403,7 +408,7 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                         scope.instance.blockBGColor = 'rgb(' + acpLib.hsv_rgb(tmp, 100, 100) + ')';
                         scope.instance.rgb = 'rgb(' + rgb + ')';
                         scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
-                        scope.$emit('colorPickerEvent', {
+                        scope.$emit('ecpEvent', {
                             rgb: scope.instance.rgb,
                             cleanRgb: rgb + '',
                             hex: scope.instance.hex
@@ -513,7 +518,7 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
                     scope.$apply(function() {
                         scope.instance.rgb = 'rgb(' + rgb + ')';
                         scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
-                        scope.$emit('colorPickerEvent', {
+                        scope.$emit('ecpEvent', {
                             rgb: scope.instance.rgb,
                             cleanRgb: rgb + '',
                             hex: scope.instance.hex
@@ -565,9 +570,9 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
                 }
             });
 
-            scope.$on('setColorPickerColorEvent', function(e, args) {
-                scope.instance.rgb = args.color;
-            });
+            // scope.$on('setColorPickerColorEvent', function(e, args) {
+            //     scope.instance.rgb = args.color;
+            // });
 
             scope.$watch('instance.hsv', function(v) {
                 if (v && v.length > 0) {

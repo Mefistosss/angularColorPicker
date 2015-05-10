@@ -14,6 +14,9 @@ acp.service('acpLib', function() {
                 return rgb;
             }
         },
+        cleanString: function(str) {
+            return str.replace(/\s+/g, '');
+        },
         obj: {
             positX: function(b) {
                 var a, c;
@@ -135,7 +138,7 @@ acp.factory('acpModel', function() {
         },
         newInstance: function(name) {
             api.removeInstance(name);
-            colorPickers[name] = {
+            return colorPickers[name] = {
                 blockBGColor: 'red',
                 rgb: 'rgb(255,255,255)',
                 hex: '#ffffff',
@@ -144,8 +147,25 @@ acp.factory('acpModel', function() {
                 picker: {
                     V: 100,
                     S: 100
+                },
+                checkboxChange: function() {
+                    colorPickers[name].picker.V = 100;
+                    colorPickers[name].picker.S = 100;
+                    colorPickers[name].hue = 0;
+
+                    if (colorPickers[name].none) {
+                        colorPickers[name].rgb = '';
+                        colorPickers[name].hex = '';
+                        colorPickers[name].hsv = 'none';
+                        colorPickers[name].blockBGColor = 'red';
+                    } else {
+                        colorPickers[name].rgb = 'rgb(0,0,0)';
+                        colorPickers[name].hex = '#000';
+                        colorPickers[name].hsv = acpLib.rgb_hsv(acpLib.pareseRgb(colorPickers[name].rgb));
+                        colorPickers[name].blockBGColor = 'rgb(' + acpLib.hsv_rgb(0, 100, 100) + ')';
+                    }
                 }
-            }
+            };
         }
     };
     return api;
