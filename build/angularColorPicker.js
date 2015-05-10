@@ -220,7 +220,7 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
 
             type = acpLib.cleanString(attrs.angularColorPicker);
 
-            if ('rgb' !== type || 'hex' !== type) {
+            if ('rgb' !== type && 'hex' !== type) {
                 type = 'rgb';
             }
 
@@ -230,6 +230,7 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                 // instance.cleanRgb TODO
                 // instance.hex
                 if (ngModelFlag) {
+                    console.log(type);
                     ngModel.$setViewValue(instance[type]);
                 }
             });

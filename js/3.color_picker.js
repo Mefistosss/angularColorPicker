@@ -54,7 +54,7 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
 
             type = acpLib.cleanString(attrs.angularColorPicker);
 
-            if ('rgb' !== type || 'hex' !== type) {
+            if ('rgb' !== type && 'hex' !== type) {
                 type = 'rgb';
             }
 
