@@ -1,6 +1,6 @@
 {
   "name": "angular_color_picker",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "lightweight colorpicker",
   "main": "gulpfile.js",
   "scripts": {
