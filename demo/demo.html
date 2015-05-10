@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="myModule">
+<head>
+    <title>Angular Color Picker</title>
+    <link rel="stylesheet" href="../css/angularColorPicker.css">
+    <script src="../node_modules/angular/angular.js"></script>
+
+    <script src="../build/angularColorPicker.js"></script>
+
+    <script>
+        angular.module('myModule', ['angularColorPicker'])
+        .config(function($provide){
+            $provide.decorator('imgPath', ['$delegate', function(imgPath){ // $delegate is the imgPath we are decorating
+                // set the path to the bgGradient.png
+                imgPath = '../img/bgGradient.png';
+                return imgPath;
+            }]);
+        })
+        .controller('ctrl', function($scope) {
+            $scope.rgb = 'rgb(61,38,137)';
+            $scope.hex = 'rgb(61,38,137)';
+        });
+    </script>
+    <style>
+        .container {
+            position: absolute;
+            display: inline-block;
+            padding: 30px;
+            top: 50%;
+            left: 50%;
+            background-color: rgb(240,255,224);
+            border: 1px solid;
+            transform: translateX(-50%) translateY(-50%);
+        }
+        #rgb, #hex {
+            position: relative;
+            text-align: center;
+            width: 200px;
+            padding: 15px 0px;
+        }
+        #hex {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body ng-controller="ctrl">
+    <div class="container">
+        <div id="rgb" ng-style="{'background-color': rgb}" angular-color-picker ng-model="rgb">
+            <span>{{rgb}}</span>
+        </div>
+        <div id="hex" ng-style="{'background-color': hex}" angular-color-picker ng-model="hex">
+            <span>{{hex}}</span>
+        </div>
+    </div>
+</body>
+</html>
