@@ -61,7 +61,7 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                 type = 'rgb';
             }
 
-            scope.$on('ecpEvent', function(e) {
+            scope.$on('acpEvent', function(e) {
                 e.stopPropagation();
                 // instance.rgb
                 // instance.cleanRgb TODO
@@ -70,7 +70,7 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                     ngModel.$setViewValue(instance[type]);
                 }
             });
-            scope.$on('closeEcp', function(e) {
+            scope.$on('closeAcp', function(e) {
                 e.stopPropagation();
                 close();
             });

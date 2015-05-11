@@ -1,4 +1,4 @@
-acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', function($compile, $window, acpLib) {
+acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', 'acpOptions', function($compile, $window, acpLib, acpOptions) {
     return {
         restrict: 'A',
         template: '<button class="close-button">X</button>',
@@ -10,6 +10,10 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', function($com
                 pHeight = $window.document.documentElement.clientHeight,
                 startPointX = 0,
                 startPointY = 0,
+                _x, _y,
+                x = acpOptions.startPosition.x,
+                y = acpOptions.startPosition.y,
+
                 move = function(e) {
                     var top, left;
 
@@ -40,6 +44,23 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', function($com
                         ae($window.document).unbind('mouseup', mouseUp);    
                     }
                 };
+            if (x !== 'center') {
+                _x = parseFloat(x);
+                if (isNaN(_x) || undefined === _x) {
+                    x = 'center';
+                }
+            }
+            if (y !== 'center') {
+                _y = parseFloat(y);
+                if (isNaN(_y) || undefined === _y) {
+                    y = 'center';
+                }
+            }
+
+            element.parent().css({
+                'top': (y === 'center') ? (pHeight / 2 - elHeight / 2) + 'px' : y,
+                'left': (x === 'center') ? (pWidth / 2 - elWidth / 2) + 'px' : x
+            });
 
             element.bind('mousedown', function(e) {
                 if (1 === e.which && e.target !== button) {
@@ -52,7 +73,7 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', function($com
                 }
             });
             ae(button).bind('click', function(e) {
-                scope.$emit('closeEcp');
+                scope.$emit('closeAcp');
             });
         }
     };

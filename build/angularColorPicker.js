@@ -5,10 +5,14 @@ var acp = angular.module('angularColorPicker', []),
     ae = angular.element,
     each = angular.forEach;
 
-
-acp.value('imgPath', '../img/bgGradient.png');
-
-
+acp.value('acpOptions', {
+    // set the path to the bgGradient.png
+    'imgPath': '../img/bgGradient.png',
+    'startPosition': {
+        'x': 'center',
+        'y': 'center'
+    }
+});
 acp.service('acpLib', function() {
     return {
         pareseRgb: function(rgb) {
@@ -202,6 +206,11 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                     }
                     $compile(container)(scope);
                 },
+                close = function() {
+                    acpModel.removeInstance(id);
+                    ngModelFlag = false;
+                    container.remove();
+                },
                 mouseDown = function(e) {
                     var target = e.target;
                     while (target && target !== container[0]) {
@@ -210,9 +219,7 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                     if (target === container[0]) {
                         return;
                     }
-                    acpModel.removeInstance(id);
-                    ngModelFlag = false;
-                    container.remove();
+                    close();    
                 };
             container.addClass('color-picker');
             container.attr('acp-window', '');
@@ -224,7 +231,7 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                 type = 'rgb';
             }
 
-            scope.$on('ecpEvent', function(e) {
+            scope.$on('acpEvent', function(e) {
                 e.stopPropagation();
                 // instance.rgb
                 // instance.cleanRgb TODO
@@ -232,6 +239,10 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                 if (ngModelFlag) {
                     ngModel.$setViewValue(instance[type]);
                 }
+            });
+            scope.$on('closeAcp', function(e) {
+                e.stopPropagation();
+                close();
             });
             element.bind('click', click);
             $document.bind('mousedown', mouseDown);
@@ -263,12 +274,12 @@ acp.directive('acpWindow', ['acpLib', 'acpModel', function(acpLib, acpModel) {
                     inst.hsv = acpLib.rgb_hsv(acpLib.pareseRgb(inst.rgb));
                     inst.blockBGColor = 'rgb(' + acpLib.hsv_rgb(0, 100, 100) + ')';
                 }
-                scope.$emit('ecpEvent');
+                scope.$emit('acpEvent');
             }
         }
     };
 }]);
-acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', function($compile, $window, acpLib) {
+acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', 'acpOptions', function($compile, $window, acpLib, acpOptions) {
     return {
         restrict: 'A',
         template: '<button class="close-button">X</button>',
@@ -280,6 +291,10 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', function($com
                 pHeight = $window.document.documentElement.clientHeight,
                 startPointX = 0,
                 startPointY = 0,
+                _x, _y,
+                x = acpOptions.startPosition.x,
+                y = acpOptions.startPosition.y,
+
                 move = function(e) {
                     var top, left;
 
@@ -304,13 +319,32 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', function($com
                 },
 
                 mouseUp = function(e) {
-                    element.css('cursor', '');
-                    ae($window.document).unbind('mousemove', move);
-                    ae($window.document).unbind('mouseup', mouseUp);
+                    if (1 === e.which) {
+                        element.css('cursor', '');
+                        ae($window.document).unbind('mousemove', move);
+                        ae($window.document).unbind('mouseup', mouseUp);    
+                    }
                 };
+            if (x !== 'center') {
+                _x = parseFloat(x);
+                if (isNaN(_x) || undefined === _x) {
+                    x = 'center';
+                }
+            }
+            if (y !== 'center') {
+                _y = parseFloat(y);
+                if (isNaN(_y) || undefined === _y) {
+                    y = 'center';
+                }
+            }
+
+            element.parent().css({
+                'top': (y === 'center') ? (pHeight / 2 - elHeight / 2) + 'px' : y,
+                'left': (x === 'center') ? (pWidth / 2 - elWidth / 2) + 'px' : x
+            });
 
             element.bind('mousedown', function(e) {
-                if (1 === e.which) {
+                if (1 === e.which && e.target !== button) {
                     e.preventDefault();
                     element.css('cursor', 'move');
                     startPointX = acpLib.mouse.pageX(e) - acpLib.obj.positX(element[0]);
@@ -318,6 +352,9 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', function($com
                     ae($window.document).bind('mouseup', mouseUp);
                     ae($window.document).bind('mousemove', move);
                 }
+            });
+            ae(button).bind('click', function(e) {
+                scope.$emit('closeAcp');
             });
         }
     };
@@ -395,7 +432,7 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                         scope.instance.blockBGColor = 'rgb(' + acpLib.hsv_rgb(tmp, 100, 100) + ')';
                         scope.instance.rgb = 'rgb(' + rgb + ')';
                         scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
-                        scope.$emit('ecpEvent');
+                        scope.$emit('acpEvent');
                     });
                 },
                 setPosition = function(h) {
@@ -455,10 +492,10 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
         }
     };
 }]);
-acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function($compile, $window, acpLib, imgPath) {
+acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'acpOptions', function($compile, $window, acpLib, acpOptions) {
     return {
         restrict: 'A',
-        template: '<img src="' + imgPath + '">' +
+        template: '<img src="' + acpOptions.imgPath + '">' +
                     '<div class="circle"></div>',
         link: function(scope, element, attrs) {
             var block = element[0],
@@ -500,7 +537,7 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'imgPath', function(
                     scope.$apply(function() {
                         scope.instance.rgb = 'rgb(' + rgb + ')';
                         scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
-                        scope.$emit('ecpEvent');
+                        scope.$emit('acpEvent');
                     });
                 },
                 setPosition = function(hsv) {

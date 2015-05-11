@@ -9,6 +9,8 @@ var gulp = require('gulp'),
 gulp.task('angular', function() {
     gulp.src(['node_modules/angular/angular.min.js'])
         .pipe(gulp.dest('build/'));
+    gulp.src(['node_modules/angular/angular.min.js.map'])
+        .pipe(gulp.dest('build/'));
 });
 
 gulp.task('js', function() {

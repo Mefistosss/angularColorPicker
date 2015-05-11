@@ -13,10 +13,14 @@
     <script>
         angular.module('myModule', ['angularColorPicker'])
         .config(function($provide){
-            $provide.decorator('imgPath', ['$delegate', function(imgPath){ // $delegate is the imgPath we are decorating
+            $provide.decorator('acpOptions', ['$delegate', function(acpOptions){ // $delegate is the acpOptions we are decorating
                 // set the path to the bgGradient.png
-                imgPath = '../img/bgGradient.png';
-                return imgPath;
+                acpOptions.imgPath = '../img/bgGradient.png';
+
+                // acpOptions.startPosition.x = '10%';
+                // acpOptions.startPosition.y = '10%';
+
+                return acpOptions;
             }]);
         })
         .controller('ctrl', function($scope) {
