@@ -71,6 +71,11 @@ acp.service('acpLib', function() {
                 return null == d.pageX && null != d.clientX ? (a = document.body, c = document.documentElement, b = c.scrollTop || a && a.scrollTop || 0, b = d.clientY + b - (c.clientTop || a.clientTop || 0)) : d.pageY;
             }
         },
+        convertRgbToHex: function(rgb) {
+            return  ('0' + parseInt(rgb[0],10).toString(16)).slice(-2) +
+                    ('0' + parseInt(rgb[1],10).toString(16)).slice(-2) +
+                    ('0' + parseInt(rgb[2],10).toString(16)).slice(-2);
+        },
         hsv_rgb: function (H,S,V){
             var f , p, q , t, lH;
             var R, G, B;
@@ -111,7 +116,7 @@ acp.service('acpLib', function() {
                 }
 
                 if (0 === s) {
-                    // неопределенность
+                    // uncertainty
                     h = 359;
                 } else {
                     cr = (v - rgb[0]) / (v - min);
@@ -130,7 +135,7 @@ acp.service('acpLib', function() {
                     }
                     h = h * 60;
 
-                    // приведение к положительным
+                    // leading to positive
                     if (h < 0) {
                         h = h + 360;
                     }

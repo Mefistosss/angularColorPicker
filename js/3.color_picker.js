@@ -27,7 +27,7 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                             instance.blockBGColor = 'red';
                             instance.none = true;
                         } else {
-                            instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
+                            instance.hex = '#' + acpLib.convertRgbToHex(rgb);
                             instance.hsv = acpLib.rgb_hsv(rgb);
                             instance.none = false;
                         }

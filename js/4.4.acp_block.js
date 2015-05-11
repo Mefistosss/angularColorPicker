@@ -42,7 +42,7 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'acpOptions', functi
                     rgb = acpLib.hsv_rgb(scope.instance.hue, S, V);
                     scope.$apply(function() {
                         scope.instance.rgb = 'rgb(' + rgb + ')';
-                        scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
+                        scope.instance.hex = '#' + acpLib.convertRgbToHex(rgb);
                         scope.$emit('acpEvent');
                     });
                 },
