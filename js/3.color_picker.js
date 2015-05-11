@@ -8,15 +8,14 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
             var id = attrs.id || 'angular-color-picker-' + Date.now(),
                 instance, ngModelFlag = false,
                 container = ae('<div>'),
-                type,
+                type, r = /rgb/,
 
                 click = function(e) {
-                    var value;
+                    var value, rgb;
                     instance = acpModel.newInstance(id);
                     ae($document[0].body).append(container[0]);
-                    if (attrs.ngModel, ngModel.$valid, value =  acpLib.cleanString(ngModel.$viewValue)) {
-                        // TODO hex
-                        var rgb = acpLib.pareseRgb(value);
+                    if (attrs.ngModel, ngModel.$valid, value = acpLib.cleanString(ngModel.$viewValue)) {
+                        rgb = r.test(value) ? acpLib.pareseRgb(value) : acpLib.pareseHex(value);
                         instance.rgb = value;
                         if ('none' === rgb) {
                             instance.rgb = '';

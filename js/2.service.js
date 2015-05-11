@@ -14,6 +14,28 @@ acp.service('acpLib', function() {
                 return rgb;
             }
         },
+        pareseHex: function(hex) {
+            var result = [], l, count = 2, step = 2, pos = 0;
+            if ('none' !== hex) {
+                hex = hex.replace('#', '');
+                l = hex.length;
+                if (6 === l || 3 === l) {
+                    if (3 === l) {
+                        count = 1;
+                        step = 1;
+                    }
+                    while(l !== pos) {
+                        result.push(parseInt(hex.substr(pos, count), 16));
+                        pos += step;
+                    }
+                } else {
+                    result = [255, 255, 255];
+                }
+                return result;
+            } else {
+                return hex;
+            }
+        },
         cleanString: function(str) {
             return str.replace(/\s+/g, '');
         },
