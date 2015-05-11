@@ -1,6 +1,6 @@
 .color-picker {
     display: inline-block;
-    position: relative;
+    position: absolute;
     width: 250px;
     height: 285px;
     border: 2px solid #8A2908;

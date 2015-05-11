@@ -230,7 +230,6 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                 // instance.cleanRgb TODO
                 // instance.hex
                 if (ngModelFlag) {
-                    console.log(type);
                     ngModel.$setViewValue(instance[type]);
                 }
             });
@@ -275,25 +274,21 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', function($com
         template: '<button class="close-button">X</button>',
         link: function(scope, element, attrs) {
             var button = element[0].childNodes[0],
-                wind = element.parent().parent()[0],
                 elWidth = element.parent()[0].offsetWidth,
                 elHeight = element.parent()[0].offsetHeight,
-                pWidth = wind.offsetWidth,
-                pHeight = wind.offsetHeight,
+                pWidth = $window.document.documentElement.clientWidth,
+                pHeight = $window.document.documentElement.clientHeight,
                 startPointX = 0,
                 startPointY = 0,
-                parPointX = 0,
-                parPointY = 0,
                 move = function(e) {
                     var top, left;
-                    parPointX = acpLib.obj.positX(element.parent().parent()[0]);
-                    parPointY = acpLib.obj.positY(element.parent().parent()[0]);
 
-                    top = acpLib.mouse.pageY(e) - startPointY - parPointY;
-                    left = acpLib.mouse.pageX(e) - startPointX - parPointX;
+                    top = acpLib.mouse.pageY(e) - startPointY;
+                    left = acpLib.mouse.pageX(e) - startPointX;
 
                     top < 0 && (top = 0);
-                    left < 0 && (left = 0); 
+                    left < 0 && (left = 0);
+
                     if (left + elWidth > pWidth) {
                         left = pWidth - elWidth;
                     }
