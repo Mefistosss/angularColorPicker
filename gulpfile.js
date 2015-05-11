@@ -6,6 +6,10 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     uglifyJS = require('gulp-uglify');
 
+gulp.task('angular', function() {
+    gulp.src(['node_modules/angular/angular.min.js'])
+        .pipe(gulp.dest('build/'));
+});
 
 gulp.task('js', function() {
     gulp.src([
@@ -50,6 +54,6 @@ gulp.task('minifyCss', function() {
         .pipe(notify('minify css done!'));
 });
 
-gulp.task('minify', ['minifyJs', 'minifyCss']);
+gulp.task('minify', ['minifyJs', 'minifyCss', 'angular']);
 
 gulp.task('default', ['js', 'css']);
