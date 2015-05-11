@@ -87,6 +87,7 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                     e.preventDefault();
                     scope.instance.none = false;
                     pos = acpLib.obj.positY(line.node);
+                    ae($window.document).bind('mouseup', mouseUp);
                     ae($window.document).bind('mousemove', move);
                 }
             });
