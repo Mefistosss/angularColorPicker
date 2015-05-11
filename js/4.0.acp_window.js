@@ -23,7 +23,7 @@ acp.directive('acpWindow', ['acpLib', 'acpModel', function(acpLib, acpModel) {
                     inst.hsv = acpLib.rgb_hsv(acpLib.pareseRgb(inst.rgb));
                     inst.blockBGColor = 'rgb(' + acpLib.hsv_rgb(0, 100, 100) + ')';
                 }
-                scope.$emit('ecpEvent');
+                scope.$emit('acpEvent');
             }
         }
     };

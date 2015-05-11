@@ -2,26 +2,30 @@
 <html ng-app="myModule">
 <head>
     <title>Angular Color Picker</title>
-    <!-- <link rel="stylesheet" href="../build/angularColorPicker.css"> -->
-    <link rel="stylesheet" href="../build/angularColorPicker.min.css">
+    <link rel="stylesheet" href="../build/angularColorPicker.css">
+    <!-- <link rel="stylesheet" href="../build/angularColorPicker.min.css"> -->
     
-    <script src="../node_modules/angular/angular.js"></script>
+    <script src="../build/angular.min.js"></script>
 
-    <!-- <script src="../build/angularColorPicker.js"></script> -->
-    <script src="../build/angularColorPicker.min.js"></script>
+    <script src="../build/angularColorPicker.js"></script>
+    <!-- // <script src="../build/angularColorPicker.min.js"></script> -->
 
     <script>
         angular.module('myModule', ['angularColorPicker'])
         .config(function($provide){
-            $provide.decorator('imgPath', ['$delegate', function(imgPath){ // $delegate is the imgPath we are decorating
+            $provide.decorator('acpOptions', ['$delegate', function(acpOptions){ // $delegate is the acpOptions we are decorating
                 // set the path to the bgGradient.png
-                imgPath = '../img/bgGradient.png';
-                return imgPath;
+                acpOptions.imgPath = '../img/bgGradient.png';
+
+                // acpOptions.startPosition.x = '10%';
+                // acpOptions.startPosition.y = '10%';
+
+                return acpOptions;
             }]);
         })
         .controller('ctrl', function($scope) {
             $scope.rgb = 'rgb(61,38,137)';
-            $scope.hex = 'rgb(61,38,137)';
+            $scope.hex = '#82ffd0';
         });
     </script>
     <style>

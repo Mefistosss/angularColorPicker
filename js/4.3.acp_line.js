@@ -57,8 +57,8 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                     scope.$apply(function() {
                         scope.instance.blockBGColor = 'rgb(' + acpLib.hsv_rgb(tmp, 100, 100) + ')';
                         scope.instance.rgb = 'rgb(' + rgb + ')';
-                        scope.instance.hex = '#' + (rgb[0].toString(16) + '' + rgb[1].toString(16) + '' + rgb[2].toString(16));
-                        scope.$emit('ecpEvent');
+                        scope.instance.hex = '#' + acpLib.convertRgbToHex(rgb);
+                        scope.$emit('acpEvent');
                     });
                 },
                 setPosition = function(h) {
@@ -87,6 +87,7 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                     e.preventDefault();
                     scope.instance.none = false;
                     pos = acpLib.obj.positY(line.node);
+                    ae($window.document).bind('mouseup', mouseUp);
                     ae($window.document).bind('mousemove', move);
                 }
             });

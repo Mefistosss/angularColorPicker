@@ -50,7 +50,10 @@
     position: relative;
     height: 180px;
     width: 180px;
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 
 .color-picker .block-picker img {
@@ -61,7 +64,10 @@
     position: absolute;
     left: 210px;
     cursor: pointer;
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 
 .color-picker #right-arrow {
@@ -92,7 +98,10 @@
     left: -11px;
     width: 40px;
     cursor: pointer;
-    user-select: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 }
 
 .color-picker .circle {
@@ -105,7 +114,10 @@
     left: 0;
     top: 0;
     cursor: default;
-    user-select: none; 
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none; 
 }
 
 .control-panel .close-picker {
