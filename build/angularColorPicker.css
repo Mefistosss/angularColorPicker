@@ -3,24 +3,30 @@
     position: absolute;
     width: 250px;
     height: 285px;
-    border: 2px solid #8A2908;
+    border: 1px solid #B6E3FF;
     background-color: white;
     top: 0px;
     left: 0px;
     z-index: 1000000;
     position: absolute;
     box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+    border-radius: 4px;
 }
 
 .angular-color-picker .acp-control-panel {
     height: 25px;
-    background-color: #8A2908;
+    background-color: #B6E3FF;
     cursor: pointer;
 }
 
 .angular-color-picker .acp-control-panel .acp-close-button {
     position: absolute;
-    right: 0px;
+    border-radius: 4px;
+    cursor: pointer;
+    border-width: 0px;
+    top: 3px;
+    right: 3px;
+    background-color: white;
 }
 
 .angular-color-picker .acp-main-panel {
