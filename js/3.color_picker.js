@@ -52,7 +52,7 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                     }
                     close();    
                 };
-            container.addClass('color-picker');
+            container.addClass('angular-color-picker');
             container.attr('acp-window', '');
             container.attr('name', id);
 

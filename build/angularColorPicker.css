@@ -1,4 +1,4 @@
-.color-picker {
+.angular-color-picker {
     display: inline-block;
     position: absolute;
     width: 250px;
@@ -12,23 +12,23 @@
     box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
 }
 
-.color-picker .control-panel {
+.angular-color-picker .acp-control-panel {
     height: 25px;
     background-color: #8A2908;
     cursor: pointer;
 }
 
-.color-picker .control-panel .close-button{
+.angular-color-picker .acp-control-panel .acp-close-button {
     position: absolute;
     right: 0px;
 }
 
-.color-picker .main-panel {
+.angular-color-picker .acp-main-panel {
     padding: 10px;
     height: 240px;
 }
 
-.color-picker .out-color {
+.angular-color-picker .acp-out-color {
     margin-top: 10px;
     width: 70px;
     height: 45px;
@@ -39,13 +39,13 @@
     float: left;
 }
 
-.color-picker .text {
+.angular-color-picker .acp-text {
     display: inline-block;
     margin-top: 10px;
     margin-left: 10px;
 }
 
- .color-picker .block-picker {
+ .angular-color-picker .acp-block-picker {
     background-color:red;
     position: relative;
     height: 180px;
@@ -56,11 +56,11 @@
             user-select: none;
 }
 
-.color-picker .block-picker img {
+.angular-color-picker .acp-block-picker img {
     width: 180px;
 }
 
-.color-picker .line-piker {
+.angular-color-picker .acp-line-piker {
     position: absolute;
     left: 210px;
     cursor: pointer;
@@ -70,7 +70,7 @@
             user-select: none;
 }
 
-.color-picker #right-arrow {
+.angular-color-picker #acp-right-arrow {
     width: 0;
     height: 0;
     left: 23px;
@@ -81,7 +81,7 @@
     border-right: 10px solid black;
 }
 
-.color-picker #left-arrow {
+.angular-color-picker #acp-left-arrow {
     width: 0;
     height: 0;
     position: absolute;
@@ -91,7 +91,7 @@
     border-right: 8px solid transparent;
 }
 
-.color-picker .arrows {
+.angular-color-picker .acp-arrows {
     position: absolute;
     top: 0;
     margin-top: -4px;
@@ -104,7 +104,7 @@
             user-select: none;
 }
 
-.color-picker .circle {
+.angular-color-picker .acp-circle {
     width: 6px;
     height: 6px;
     background-color: black;
@@ -118,9 +118,4 @@
        -moz-user-select: none;
         -ms-user-select: none;
             user-select: none; 
-}
-
-.control-panel .close-picker {
-    position: absolute;
-    right: 0px;
 }

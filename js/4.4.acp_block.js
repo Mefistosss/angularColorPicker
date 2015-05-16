@@ -2,7 +2,7 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'acpOptions', functi
     return {
         restrict: 'A',
         template: '<img src="' + acpOptions.imgPath + '">' +
-                    '<div class="circle"></div>',
+                    '<div class="acp-circle"></div>',
         link: function(scope, element, attrs) {
             var block = element[0], watch1, watch2,
                 circle = block.childNodes[1],

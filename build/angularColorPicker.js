@@ -250,7 +250,7 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                     }
                     close();    
                 };
-            container.addClass('color-picker');
+            container.addClass('angular-color-picker');
             container.attr('acp-window', '');
             container.attr('name', id);
 
@@ -282,8 +282,8 @@ acp.directive('acpWindow', ['acpLib', 'acpModel', function(acpLib, acpModel) {
     return {
         restrict: 'A',
         scope: true,
-        template:   '<div class="control-panel" acp-control-panel></div>' +
-                    '<div class="main-panel" acp-main-panel></div>',
+        template:   '<div class="acp-control-panel" acp-control-panel></div>' +
+                    '<div class="acp-main-panel" acp-main-panel></div>',
         link: function(scope, element, attrs) {
             scope.instance = acpModel.getInstance(attrs.name);
             scope.checkboxChange = function() {
@@ -311,7 +311,7 @@ acp.directive('acpWindow', ['acpLib', 'acpModel', function(acpLib, acpModel) {
 acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', 'acpOptions', function($compile, $window, acpLib, acpOptions) {
     return {
         restrict: 'A',
-        template: '<button class="close-button">X</button>',
+        template: '<button class="acp-close-button">X</button>',
         link: function(scope, element, attrs) {
             var button = element[0].childNodes[0],
                 elWidth = element.parent()[0].offsetWidth,
@@ -405,10 +405,10 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', 'acpOptions',
 acp.directive('acpMainPanel', ['$compile', function($compile) {
     return {
         restrict: 'A',
-        template:   '<div class="line-piker" acp-line></div>' +
-                    '<div class="block-picker" acp-block="blockBGColor"></div>' +
-                    '<div class="out-color" acp-out></div>' +
-                    '<div class="text">' +
+        template:   '<div class="acp-line-piker" acp-line></div>' +
+                    '<div class="acp-block-picker" acp-block="blockBGColor"></div>' +
+                    '<div class="acp-out-color" acp-out></div>' +
+                    '<div class="acp-text">' +
                         '<span>{{instance.rgb}}</span></br>' +
                         '<span>{{instance.hex}}</span></br>' +
                         'none: <input ng-model="instance.none" type="checkbox" ng-change="checkboxChange()">' +
@@ -443,11 +443,11 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
 
     return {
         restrict: 'A',
-        template: '<div class="arrows">' +
-                    '<div id="left-arrow"></div>' +
-                    '<div id="right-arrow"></div>' +
+        template: '<div class="acp-arrows">' +
+                    '<div id="acp-left-arrow"></div>' +
+                    '<div id="acp-right-arrow"></div>' +
                 '</div>' +
-                '<canvas width="20" height="180" class="cLine"></canvas>',
+                '<canvas width="20" height="180" class="acp-cLine"></canvas>',
         link: function(scope, element, attrs) {
             var pos, tmp = 0, watch,
                 arrows = element[0].childNodes[0],
@@ -552,7 +552,7 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'acpOptions', functi
     return {
         restrict: 'A',
         template: '<img src="' + acpOptions.imgPath + '">' +
-                    '<div class="circle"></div>',
+                    '<div class="acp-circle"></div>',
         link: function(scope, element, attrs) {
             var block = element[0], watch1, watch2,
                 circle = block.childNodes[1],

@@ -26,11 +26,11 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
 
     return {
         restrict: 'A',
-        template: '<div class="arrows">' +
-                    '<div id="left-arrow"></div>' +
-                    '<div id="right-arrow"></div>' +
+        template: '<div class="acp-arrows">' +
+                    '<div id="acp-left-arrow"></div>' +
+                    '<div id="acp-right-arrow"></div>' +
                 '</div>' +
-                '<canvas width="20" height="180" class="cLine"></canvas>',
+                '<canvas width="20" height="180" class="acp-cLine"></canvas>',
         link: function(scope, element, attrs) {
             var pos, tmp = 0, watch,
                 arrows = element[0].childNodes[0],

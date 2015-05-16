@@ -1,7 +1,7 @@
 acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', 'acpOptions', function($compile, $window, acpLib, acpOptions) {
     return {
         restrict: 'A',
-        template: '<button class="close-button">X</button>',
+        template: '<button class="acp-close-button">X</button>',
         link: function(scope, element, attrs) {
             var button = element[0].childNodes[0],
                 elWidth = element.parent()[0].offsetWidth,
