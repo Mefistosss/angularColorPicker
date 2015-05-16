@@ -4,7 +4,7 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'acpOptions', functi
         template: '<img src="' + acpOptions.imgPath + '">' +
                     '<div class="circle"></div>',
         link: function(scope, element, attrs) {
-            var block = element[0],
+            var block = element[0], watch1, watch2,
                 circle = block.childNodes[1],
                 bPstX, bPstY, bWi, bHe, cW, cH, pxY, pxX,
                 getColor = function (e) {      
@@ -64,9 +64,21 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'acpOptions', functi
                     e.preventDefault();
                     ae($window.document).unbind('mousemove', move);
                     ae($window.document).unbind('mouseup', mouseUp);
+                },
+                mouseDown = function(e) {
+                    if (1 === e.which) {
+                        e.preventDefault();
+                        scope.instance.none = false;
+                        move(e);
+                        ae($window.document).bind('mouseup', mouseUp);
+                        ae($window.document).bind('mousemove', move);
+                    }
+                },
+                click = function(e) {
+                    getColor(e);    
                 };
 
-            scope.$watch('instance.blockBGColor', function(v) {
+            watch1 = scope.$watch('instance.blockBGColor', function(v) {
                 element.css('background-color', v);
             });
 
@@ -77,27 +89,24 @@ acp.directive('acpBlock', ['$compile', '$window', 'acpLib', 'acpOptions', functi
             pxY = bHe / 100;
             pxX = bWi / 100;
 
-            element.bind('click', function(e) {
-                getColor(e);
-            });
+            element.bind('click', click);
 
-            element.bind('mousedown', function(e) {
-                if (1 === e.which) {
-                    e.preventDefault();
-                    scope.instance.none = false;
-                    move(e);
-                    ae($window.document).bind('mouseup', mouseUp);
-                    ae($window.document).bind('mousemove', move);
-                }
-            });
+            element.bind('mousedown', mouseDown);
 
-            scope.$watch('instance.hsv', function(v) {
+            watch2 = scope.$watch('instance.hsv', function(v) {
                 if (v && v.length > 0) {
                     if ('none' === v) {
                         v = [359, 0, 0];
                     }
                     setPosition(v);
                 }
+            });
+
+            element.bind('$destroy', function(e) {
+                watch1();
+                watch2();
+                element.unbind('mousedown', mouseDown);
+                element.unbind('click', click);
             });
         }
     };

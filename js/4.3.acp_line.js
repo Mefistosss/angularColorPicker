@@ -32,7 +32,7 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                 '</div>' +
                 '<canvas width="20" height="180" class="cLine"></canvas>',
         link: function(scope, element, attrs) {
-            var pos, tmp = 0,
+            var pos, tmp = 0, watch,
                 arrows = element[0].childNodes[0],
                 line = {
                     width: 20,
@@ -75,6 +75,27 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
                     e.preventDefault();
                     ae($window.document).unbind('mousemove', move);
                     ae($window.document).unbind('mouseup', mouseUp);
+                },
+                arrowsMouseDown = function(e) {
+                    if (1 === e.which) {
+                        e.preventDefault();
+                        scope.instance.none = false;
+                        pos = acpLib.obj.positY(line.node);
+                        ae($window.document).bind('mouseup', mouseUp);
+                        ae($window.document).bind('mousemove', move);
+                    }
+                },
+                lineMouseDown = function(e) {
+                    if (1 === e.which) {
+                        e.preventDefault();
+                        pos = acpLib.obj.positY(line.node);
+                        ae($window.document).bind('mouseup', mouseUp);
+                        ae($window.document).bind('mousemove', move);
+                    }
+                },
+                lineClick = function(e) {
+                    scope.instance.none = false;
+                    getColor(e);
                 };
 
             line.node.width = line.width;
@@ -82,39 +103,30 @@ acp.directive('acpLine', ['$compile', '$window', 'acpLib', function($compile, $w
            
             rgb(line.node, line.height, line.width);
 
-            ae(arrows).bind('mousedown', function(e) {
-                if (1 === e.which) {
-                    e.preventDefault();
-                    scope.instance.none = false;
-                    pos = acpLib.obj.positY(line.node);
-                    ae($window.document).bind('mouseup', mouseUp);
-                    ae($window.document).bind('mousemove', move);
-                }
-            });
-
+            ae(arrows).bind('mousedown', arrowsMouseDown);
             ae(arrows.node).bind('click', getColor);
 
-            ae(line.node).bind('click', function(e) {
-                scope.instance.none = false;
-                getColor(e);
-            });
+            ae(line.node).bind('click', lineClick);
+            ae(line.node).bind('mousedown', lineMouseDown);
 
-            ae(line.node).bind('mousedown', function(e) {
-                if (1 === e.which) {
-                    e.preventDefault();
-                    pos = acpLib.obj.positY(line.node);
-                    ae($window.document).bind('mouseup', mouseUp);
-                    ae($window.document).bind('mousemove', move);
-                }
-            });
-
-            scope.$watch('instance.hsv', function(v) {
+            watch = scope.$watch('instance.hsv', function(v) {
                 if (v && v.length > 0) {
                     if ('none' === v) {
                         v = [359, 0, 0];
                     }
                     setPosition(v[0]);
                 }
+            });
+
+            element.bind('$destroy', function(e) {
+                watch();
+                ae($window.document).unbind('mouseup', mouseUp);
+                ae($window.document).unbind('mousemove', move);
+
+                ae(arrows.node).unbind('click', getColor);
+                ae(arrows).unbind('mousedown', arrowsMouseDown);
+                ae(line.node).unbind('click', lineClick);
+                ae(line.node).unbind('mousedown', lineMouseDown);
             });
         }
     };

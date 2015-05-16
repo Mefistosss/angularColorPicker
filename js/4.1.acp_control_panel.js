@@ -43,6 +43,19 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', 'acpOptions',
                         ae($window.document).unbind('mousemove', move);
                         ae($window.document).unbind('mouseup', mouseUp);    
                     }
+                },
+                mouseDown = function(e) {
+                    if (1 === e.which && e.target !== button) {
+                        e.preventDefault();
+                        element.css('cursor', 'move');
+                        startPointX = acpLib.mouse.pageX(e) - acpLib.obj.positX(element[0]);
+                        startPointY = acpLib.mouse.pageY(e) - acpLib.obj.positY(element[0]);
+                        ae($window.document).bind('mouseup', mouseUp);
+                        ae($window.document).bind('mousemove', move);
+                    }    
+                },
+                click = function(e) {
+                    scope.$emit('closeAcp');
                 };
             if (x !== 'center') {
                 _x = parseFloat(x);
@@ -62,18 +75,14 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', 'acpOptions',
                 'left': (x === 'center') ? (pWidth / 2 - elWidth / 2) + 'px' : x
             });
 
-            element.bind('mousedown', function(e) {
-                if (1 === e.which && e.target !== button) {
-                    e.preventDefault();
-                    element.css('cursor', 'move');
-                    startPointX = acpLib.mouse.pageX(e) - acpLib.obj.positX(element[0]);
-                    startPointY = acpLib.mouse.pageY(e) - acpLib.obj.positY(element[0]);
-                    ae($window.document).bind('mouseup', mouseUp);
-                    ae($window.document).bind('mousemove', move);
-                }
-            });
-            ae(button).bind('click', function(e) {
-                scope.$emit('closeAcp');
+            element.bind('mousedown', mouseDown);
+            ae(button).bind('click', click);
+
+            element.bind('$destroy', function(e) {
+                ae(button).unbind('click', click);
+                ae($window.document).unbind('mousemove', move);
+                ae($window.document).unbind('mouseup', mouseUp); 
+                element.unbind('mousedown', mouseDown);
             });
         }
     };
