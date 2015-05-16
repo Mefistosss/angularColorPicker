@@ -2,8 +2,8 @@ acp.directive('acpWindow', ['acpLib', 'acpModel', function(acpLib, acpModel) {
     return {
         restrict: 'A',
         scope: true,
-        template:   '<div class="control-panel" acp-control-panel></div>' +
-                    '<div class="main-panel" acp-main-panel></div>',
+        template:   '<div class="acp-control-panel" acp-control-panel></div>' +
+                    '<div class="acp-main-panel" acp-main-panel></div>',
         link: function(scope, element, attrs) {
             scope.instance = acpModel.getInstance(attrs.name);
             scope.checkboxChange = function() {

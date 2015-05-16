@@ -33,11 +33,13 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                         }
                         ngModelFlag = true;
                     }
+                    $document.bind('mousedown', mouseDown);
                     $compile(container)(scope);
                 },
                 close = function() {
                     acpModel.removeInstance(id);
                     ngModelFlag = false;
+                    $document.unbind('mousedown', mouseDown);
                     container.remove();
                 },
                 mouseDown = function(e) {
@@ -50,7 +52,7 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                     }
                     close();    
                 };
-            container.addClass('color-picker');
+            container.addClass('angular-color-picker');
             container.attr('acp-window', '');
             container.attr('name', id);
 
@@ -62,9 +64,6 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
 
             scope.$on('acpEvent', function(e) {
                 e.stopPropagation();
-                // instance.rgb
-                // instance.cleanRgb TODO
-                // instance.hex
                 if (ngModelFlag) {
                     ngModel.$setViewValue(instance[type]);
                 }
@@ -74,7 +73,10 @@ acp.directive('angularColorPicker', ['$compile', '$document', 'acpModel', 'acpLi
                 close();
             });
             element.bind('click', click);
-            $document.bind('mousedown', mouseDown);
+            element.bind('$destroy', function(e) {
+                element.unbind('click', click);
+                $document.unbind('mousedown', mouseDown);
+            });
         }
     };
 }]);
