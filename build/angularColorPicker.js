@@ -11,7 +11,8 @@ acp.value('acpOptions', {
     'startPosition': {
         'x': 'center',
         'y': 'center'
-    }
+    },
+    'saveLastPosition': true
 });
 acp.service('acpLib', function() {
     return {
@@ -338,6 +339,11 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', 'acpOptions',
 
                     if (top + elHeight > pHeight) {
                         top = pHeight - elHeight;
+                    }
+
+                    if (acpOptions.saveLastPosition) {
+                        acpOptions.startPosition.x = left + 'px';
+                        acpOptions.startPosition.y = top + 'px'
                     }
 
                     element.parent().css({

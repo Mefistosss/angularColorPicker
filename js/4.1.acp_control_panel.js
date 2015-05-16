@@ -31,6 +31,11 @@ acp.directive('acpControlPanel', ['$compile', '$window', 'acpLib', 'acpOptions',
                         top = pHeight - elHeight;
                     }
 
+                    if (acpOptions.saveLastPosition) {
+                        acpOptions.startPosition.x = left + 'px';
+                        acpOptions.startPosition.y = top + 'px'
+                    }
+
                     element.parent().css({
                         'top': top + 'px',
                         'left': left + 'px'

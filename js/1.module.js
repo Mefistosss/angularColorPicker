@@ -9,5 +9,6 @@ acp.value('acpOptions', {
     'startPosition': {
         'x': 'center',
         'y': 'center'
-    }
+    },
+    'saveLastPosition': true
 });
